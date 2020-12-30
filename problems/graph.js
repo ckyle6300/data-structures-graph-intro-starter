@@ -32,25 +32,70 @@ class Graph {
 
   breadthFirstTraversal(startingVertex) {
     const result = [];
-    const queue = [];
-
-
+    const queue = [startingVertex];
+    const visited = {};
+    visited[startingVertex] = true;
+    let currentVertex;
     if (!startingVertex) return result;
+    while (queue.length) {
+      currentVertex = queue.shift();
+      result.push(currentVertex);
+      this.adjList[currentVertex].forEach((neighbor) => {
+        if (!visited[neighbor]) {
+          visited[neighbor] = true;
+          queue.push(neighbor)
+        }
+      });
+    }
 
-
+    return result;
   }
 
+
+
+
+
   depthFirstTraversalIterative(startingVertex) {
-    // Code goes here ...
+    const result = [];
+    const stack = [startingVertex];
+    const visited = {};
+    visited[startingVertex] = true;
+    let currentVertex;
+    while (stack.length) {
+      currentVertex = stack.pop();
+      result.push(currentVertex);
+      this.adjList[currentVertex].forEach((neighbor) => {
+        if (!visited[neighbor]) {
+          visited[neighbor] = true;
+          stack.push(neighbor);
+        }
+      });
+    }
+
+    return result;
   }
 
   depthFirstTraversalRecursive(startingVertex, visited = new Set(), vertices = []) {
-    // Code goes here ...
+    if (visited.has(startingVertex)) return;
+    visited.add(startingVertex);
+    vertices.push(startingVertex)
+    this.adjList[startingVertex].forEach((neighbor) => this.depthFirstTraversalRecursive(neighbor, visited, vertices));
+    return vertices;
   }
+
 
 }
 
+/*
+  a: ['b', 'c', 'd'],
+    b: ['a', 'c', 'e'],
+      c: ['a', 'b', 'f', 'g'],
+        d: ['a', 'g'],
+          g: ['d', 'c', 'f'],
+            e: ['b'],
+              f: ['c', 'g']
 
+*/
 const edges =
   [['a', 'b'],
   ['a', 'c'],
@@ -67,12 +112,3 @@ console.log(graph.buildGraph(edges));
 module.exports = {
   Graph
 };
-
-
-
-
-
-
-
-
-
