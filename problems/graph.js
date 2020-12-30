@@ -1,23 +1,43 @@
 
 class Graph {
   constructor() {
-    // Code goes here ...
+    this.adjList = {};
   }
 
   addVertex(vertex) {
-    // Code goes here ...
+    if (this.adjList[vertex]) return;
+    this.adjList[vertex] = [];
   }
 
   addEdges(srcValue, destValue) {
-    // Code goes here ...
+    if (!this.adjList[srcValue]) this.addVertex(srcValue);
+    if (!this.adjList[destValue]) this.addVertex(destValue);
+
+    const val1Vertex = this.adjList[srcValue];
+    const val2Vertex = this.adjList[destValue];
+
+    val1Vertex.push(destValue)
+    val2Vertex.push(srcValue);
   }
 
   buildGraph(edges) {
-    // Code goes here ...
+    if (!edges) return;
+
+    edges.forEach(subArr => {
+      this.addEdges(subArr[0], subArr[1])
+    });
+
+    return this.adjList;
   }
 
   breadthFirstTraversal(startingVertex) {
-    // Code goes here ...
+    const result = [];
+    const queue = [];
+
+
+    if (!startingVertex) return result;
+
+
   }
 
   depthFirstTraversalIterative(startingVertex) {
@@ -30,6 +50,20 @@ class Graph {
 
 }
 
+
+const edges =
+  [['a', 'b'],
+  ['a', 'c'],
+  ['a', 'd'],
+  ['d', 'g'],
+  ['b', 'c'],
+  ['b', 'e'],
+  ['c', 'f'],
+  ['c', 'g'],
+  ['f', 'g']]
+
+let graph = new Graph();
+console.log(graph.buildGraph(edges));
 module.exports = {
   Graph
 };
